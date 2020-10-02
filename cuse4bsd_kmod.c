@@ -1882,13 +1882,13 @@ cuse_client_kqfilter(struct cdev *dev, struct knote *kn)
 		pcc->cflags |= CUSE_CLI_KNOTE_HAS_READ;
 		kn->kn_hook = pcc;
 		kn->kn_fop = &cuse_client_kqfilter_read_ops;
-		knlist_add(&pcs->selinfo.si_note, kn, 1);
+		knote_insert(&pcs->kq.ki_note, kn);
 		break;
 	case EVFILT_WRITE:
 		pcc->cflags |= CUSE_CLI_KNOTE_HAS_WRITE;
 		kn->kn_hook = pcc;
 		kn->kn_fop = &cuse_client_kqfilter_write_ops;
-		knlist_add(&pcs->selinfo.si_note, kn, 1);
+		knote_insert(&pcs->kq.ki_note, kn);
 		break;
 	default:
 		error = EINVAL;
